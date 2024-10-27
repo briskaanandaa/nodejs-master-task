@@ -1,4 +1,5 @@
 const fs = require("node:fs");
+const path = require("node:path");
 const readline = require("node:readline");
 
 const rl = readline.createInterface({
@@ -8,13 +9,17 @@ const rl = readline.createInterface({
 
 const app = {};
 
-// contoh script pembuatan folder
+// Membuat Folder
 app.makeFolder = () => {
-  rl.question("Masukan Nama Folder : ", (folderName) => {
-    fs.mkdir(__dirname + `/${folderName}`, () => {
-      console.log("Berhasil membuat folder baru");
+  rl.question("Masukkan Nama Folder : ", (folderName) => {
+    fs.mkdir(path.join(__dirname, folderName), (err) => {
+      if (err) {
+        console.error("Kesalahan saat membuat folder:", err);
+      } else {
+        console.log("Berhasil membuat folder baru");
+      }
+      rl.close();
     });
-    rl.close();
   });
 };
 
