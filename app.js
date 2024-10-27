@@ -95,4 +95,20 @@ app.readFolder = () => {
   });
 };
 
+// Membaca File
+app.readFile = () => {
+  rl.question("Masukkan Nama File: ", (fileName) => {
+    const filePath = path.join(__dirname, fileName);
+
+    fs.readFile(filePath, "utf8", (err, data) => {
+      if (err) {
+        console.error("Tidak dapat membaca file:", err);
+      } else {
+        console.log(`Isi dari file ${fileName}\n\n${data}`);
+      }
+      rl.close();
+    });
+  });
+};
+
 module.exports = app;
