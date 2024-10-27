@@ -8,7 +8,7 @@
     "make-folder" : "node index.js make-folder",
     "make-file": "node index.js make-file",
     "ext-sorter": "node index.js ext-sorter",
-    "read-folder" : ""
+    "read-folder": "node index.js read-folder"
   },
   "keywords": [],
   "author": "",

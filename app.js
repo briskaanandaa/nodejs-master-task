@@ -66,4 +66,33 @@ app.extSorter = () => {
   });
 };
 
+// Membaca Folder
+app.readFolder = () => {
+  rl.question("Masukkan Nama Folder: ", (folderName) => {
+    const folderPath = path.join(__dirname, folderName);
+
+    fs.readdir(folderPath, { withFileTypes: true }, (err, files) => {
+      if (err) {
+        console.error("Tidak dapat membaca direktori:", err);
+        rl.close();
+        return;
+      }
+
+      const fileDetails = files.map((file) => {
+        const stats = fs.statSync(path.join(folderPath, file.name));
+        return {
+          namaFile: file.name,
+          extensi: path.extname(file.name).slice(1),
+          jenisFile: file.isDirectory() ? "folder" : "file",
+          tanggalDibuat: stats.birthtime.toISOString().split("T")[0],
+          ukuranFile: `${(stats.size / 1024).toFixed(2)}kb`,
+        };
+      });
+
+      console.log(JSON.stringify(fileDetails, null, 4));
+      rl.close();
+    });
+  });
+};
+
 module.exports = app;
