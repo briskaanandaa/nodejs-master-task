@@ -11,33 +11,41 @@ const app = {};
 
 // Membuat Folder
 app.makeFolder = () => {
-  rl.question("Masukkan Nama Folder : ", (folderName) => {
-    fs.mkdir(path.join(__dirname, folderName), (err) => {
-      if (err) {
-        console.error("Kesalahan saat membuat folder:", err);
-      } else {
-        console.log("Berhasil membuat folder baru");
-      }
-      rl.close();
+  rl.question("Masukan Nama Folder : ", (folderName) => {
+    fs.mkdir(__dirname + `/${folderName}`, () => {
+      console.log("Berhasil membuat folder baru");
     });
+    rl.close();
   });
 };
 
 // Membuat File
 app.makeFile = () => {
-  rl.question(
-    "Masukkan Nama File (beserta ekstensinya contoh : file.js) : ",
-    (fileName) => {
-      fs.writeFile(path.join(__dirname, fileName), "", (err) => {
-        if (err) {
-          console.error("Kesalahan saat membuat file:", err);
-        } else {
-          console.log("Berhasil membuat file baru");
-        }
-        rl.close();
-      });
+  rl.question("Masukan Nama Folder : ", (folderName) => {
+    const pathFolder = `${__dirname}/${folderName}`;
+
+    // Kita cek apakah foldernya udah ada atau belum
+    if (!fs.existsSync(pathFolder)) {
+      // Foldernya belum ada, jadi kita buat baru
+      fs.mkdirSync(pathFolder);
+      console.log("Berhasil Membuat Folder Baru");
+    } else {
+      console.log("folder already exists");
     }
-  );
+
+    rl.question("Masukan Nama File : ", (fileName) => {
+      rl.question("Masukan ekstensi file : ", (extName) => {
+        rl.question("Masukan isi file : ", (fileData) => {
+          fs.writeFileSync(
+            `${pathFolder}/${fileName}.${extName}`,
+            `${fileData}`
+          );
+          console.log("Berhasil membuat file baru");
+          rl.close();
+        });
+      });
+    });
+  });
 };
 
 // Merapikan File
