@@ -35,4 +35,35 @@ app.makeFile = () => {
   );
 };
 
+// Merapikan File
+app.extSorter = () => {
+  const unorganizedFolder = path.join(__dirname, "unorganize_folder");
+
+  fs.readdir(unorganizedFolder, (err, files) => {
+    if (err) {
+      return console.error("Tidak dapat memindai direktori:", err);
+    }
+
+    files.forEach((file) => {
+      const ext = path.extname(file).slice(1);
+      const extFolder = path.join(__dirname, ext);
+
+      if (!fs.existsSync(extFolder)) {
+        fs.mkdirSync(extFolder);
+      }
+
+      fs.rename(
+        path.join(unorganizedFolder, file),
+        path.join(extFolder, file),
+        (err) => {
+          if (err) {
+            console.error("Kesalahan saat memindahkan file:", err);
+          }
+        }
+      );
+    });
+    console.log("File telah diatur berdasarkan ekstensi.");
+  });
+};
+
 module.exports = app;
